@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button (click)="showSimulation()">
+        <ion-icon name="play"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>{{book.getHeader()}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showInfo()">
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-slides centeredSlides pager>
+  <ion-slide *ngFor="let page of intro">
+    <ion-nav [root]="page.root" [rootParams]="page.params"></ion-nav>
+  </ion-slide>
+</ion-slides>

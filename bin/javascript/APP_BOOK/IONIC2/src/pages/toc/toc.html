@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content scroll="true" overflow-scroll="true" >
+  <ion-title padding-top>{{book.getSectionTitle(book.getTOC())}}</ion-title>
+<hr />
+    <ion-list *ngIf="book.hasChapters()">
+      <ion-item-group *ngFor="let chapter of book.getChapters()">
+        <ion-item-divider text-wrap  light >
+          <h2>{{book.getChapterTitle(chapter)}} </h2>
+          <small>{{book.getChapterDescription(chapter)}}</small>
+        </ion-item-divider>
+          <ion-item no-lines *ngFor="let section of book.getChapterSections(chapter)" >
+            <button text-wrap ion-item (click)="selectSection(section)">
+              <h3>{{book.getSectionTitle(section)}}</h3>
+              <small>{{book.getSectionDescription(section)}}</small>
+            </button>
+          </ion-item>
+      </ion-item-group>
+    </ion-list>
+    <ion-list *ngIf="!book.hasChapters()">
+      <ion-item-group *ngFor="let section of book.getSections()">
+          <ion-item no-lines *ngIf="section!=book.getTOC()" >
+            <button text-wrap ion-item (click)="selectSection(section)">
+              <h3>{{book.getSectionTitle(section)}}</h3>
+              <small>{{book.getSectionDescription(section)}}</small>
+            </button>
+          </ion-item>
+      </ion-item-group>
+    </ion-list>
+</ion-content>

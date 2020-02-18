@@ -1,0 +1,15 @@
+<ion-card #myNav padding>
+    <ion-card-header *ngIf="!book.getFullScreen()">
+      <ion-title text-center>{{book.getHeader()}}</ion-title>
+    </ion-card-header>
+
+	<img src="{{book.getLogo()}}">
+
+  <ion-list>
+    <button ion-item *ngFor="let page of pages"
+              (click)="itemSelected(page)">
+      <ion-icon [name]="page.icon"></ion-icon>
+      {{page.title}}
+    </button>
+  </ion-list>
+</ion-card>

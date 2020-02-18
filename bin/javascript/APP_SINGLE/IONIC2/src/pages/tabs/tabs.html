@@ -1,0 +1,23 @@
+<ion-header *ngIf="!book.getFullScreen()">
+  <ion-toolbar>
+    <ion-title text-center>{{book.getHeader()}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showInfo()">
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scroll="true" overflow-scroll="true">
+  <ion-tabs #myTabs>
+    <ion-tab *ngFor="let tab of tabs; let i=index"
+      [root]="tab.root"
+      [rootParams]="tab.params"
+      [tabTitle]="tab.title"
+      [tabIcon]="tab.icon"
+      (ionSelect) = "tabSelected(i,tab)"
+      >
+    </ion-tab>
+  </ion-tabs>
+</ion-content>

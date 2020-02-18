@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons left >
+      <button ion-button icon-only (click)="previousSection()" >
+        <ion-icon *ngIf="isFirstSection()"  name="radio-button-off"></ion-icon>
+        <ion-icon *ngIf="!isFirstSection()" name="arrow-dropleft-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title text-center>{{book.getHeader()}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="nextSection()" >
+        <ion-icon *ngIf="isLastSection()"  name="radio-button-off"></ion-icon>
+        <ion-icon *ngIf="!isLastSection()" name="arrow-dropright-circle"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="showInfo()">
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-menu [content]="content" side="left" >
+  <ion-toolbar>
+    <ion-title><small>{{book.getMenuTitle()}}</small></ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only menuClose>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-scroll style="height: 100%" scrollY="true">
+    <ion-list *ngIf="book.hasChapters()" >
+      <ion-item-divider *ngIf="book.getTOC()!=null"
+          text-wrap padding-bottom padding-top (click)="selectSection(book.getTOC())">
+          <h2>{{book.getSectionTitle(book.getTOC())}}</h2>
+      </ion-item-divider>
+      <ion-item-group *ngFor="let chapter of book.getChapters()">
+        <ion-item-divider padding-top text-wrap  light (click)="toggleChapter(chapter)" [ngClass]="{active: isChapterExpanded(chapter)}">
+          <h2>{{book.getChapterTitle(chapter)}} </h2>
+          <small>{{book.getChapterDescription(chapter)}}</small>
+          <ion-icon color="success" style="padding-right:15px" item-right [name]="isChapterExpanded(chapter) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+        </ion-item-divider>
+        <div *ngIf="isChapterExpanded(chapter)">
+          <ion-item no-lines class="sectionItem" *ngFor="let section of book.getChapterSections(chapter)" >
+            <button text-wrap ion-item (click)="selectSection(section)">
+              <h3>{{book.getSectionTitle(section)}}</h3>
+            </button>
+          </ion-item>
+          <ion-item-divider class="emptyItem"></ion-item-divider>
+        </div>
+      </ion-item-group>
+      <ion-item-divider class="finalItem"></ion-item-divider>
+    </ion-list>
+
+    <ion-list *ngIf="!book.hasChapters()" >
+      <ion-item-divider *ngIf="book.getTOC()!=null"
+          text-wrap padding-bottom padding-top (click)="selectSection(book.getTOC())">
+          <h2>{{book.getSectionTitle(book.getTOC())}}</h2>
+      </ion-item-divider>
+      <ion-item-group *ngFor="let section of book.getSections()">
+          <ion-item no-lines *ngIf="section!=book.getTOC()" >
+            <button text-wrap ion-item (click)="selectSection(section)">
+              <h3>{{book.getSectionTitle(section)}}</h3>
+              <small>{{book.getSectionDescription(section)}}</small>
+            </button>
+          </ion-item>
+      </ion-item-group>
+
+      <ion-item-divider class="finalItem"></ion-item-divider>
+    </ion-list>
+  </ion-scroll>
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
